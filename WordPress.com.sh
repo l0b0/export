@@ -61,7 +61,6 @@ EXPORT_PATH="$4"
 COOKIES_PATH="${EXPORT_PATH}.cookie"
 LOGIN_URL="https://${HOSTNAME}.wordpress.com/wp-login.php"
 
-curl --cookie-jar "$COOKIES_PATH" --output /dev/null "$LOGIN_URL" # TODO: Necessary??
 curl --cookie-jar "$COOKIES_PATH" --output /dev/null --data "log=${USERNAME}&pwd=${PASSWORD}&rememberme=forever&wp-submit=Log In&redirect_to=https://${HOSTNAME}.wordpress.com/wp-admin/&testcookie=1" "$LOGIN_URL"
 
 # Cookie cleansing
