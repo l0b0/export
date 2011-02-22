@@ -24,7 +24,6 @@
 #
 #        @midnight /.../export/LibraryThing.sh user password /.../lt.csv
 #
-#
 # BUGS
 #        https://github.com/l0b0/export/issues
 #
@@ -44,28 +43,35 @@
 #        You should have received a copy of the GNU General Public License
 #        along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+################################################################################
 set -o errexit -o nounset
+
+if [ $# -ne 3 ]
+then
+    echo 'Wrong parameters - See the documentation on top of the script'
+    exit 1
+fi
 
 USERNAME="$1"
 PASSWORD="$2"
-SAVE_PATH="$3"
+EXPORT_PATH="$3"
 
 # Authenticate
 POST_DATA="formusername=${USERNAME}&formpassword=${PASSWORD}&index_signin_already=Sign%20in"
-COOKIES_PATH="${SAVE_PATH}.cookie"
-SIGNUP_PATH="${SAVE_PATH}.signup"
+COOKIES_PATH="${EXPORT_PATH}.cookie"
+SIGNUP_PATH="${EXPORT_PATH}.signup"
+LOGIN_URL='https://www.librarything.com/signup.php'
 
-wget --post-data "$POST_DATA" --keep-session-cookies --save-cookies="$COOKIES_PATH" --no-check-certificate --output-document="$SIGNUP_PATH" https://www.librarything.com/signup.php
+wget --post-data "$POST_DATA" --keep-session-cookies --save-cookies="$COOKIES_PATH" --no-check-certificate --output-document="$SIGNUP_PATH" "$LOGIN_URL"
 
 # Export
 CHECKSUM="$(grep cookie_userchecksum $COOKIES_PATH | cut -f 7)"
 USERNUM="$(grep cookie_usernum $COOKIES_PATH | cut -f 7)"
 USERID="$(grep cookie_userid $COOKIES_PATH | cut -f 7)"
-
 COOKIE="cookie_userchecksum=${CHECKSUM};cookie_usernum=${USERNUM};cookie_userid=${USERID}"
+EXPORT_URL=https://www.librarything.com/export-csv
 
-wget --no-check-certificate --header "Cookie: ${COOKIE}" -O "$SAVE_PATH" https://www.librarything.com/export-csv
+wget --no-check-certificate --header "Cookie: $COOKIE" -O "$EXPORT_PATH" "$EXPORT_URL"
 
 # Cleanup
-rm -- "$COOKIES_PATH" "$SIGNUP_PATH"
+rm -f -- "$COOKIES_PATH" "$SIGNUP_PATH"
