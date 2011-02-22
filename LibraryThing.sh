@@ -12,6 +12,9 @@
 #
 #        How to save your personal library at midnight every day:
 #
+#        First, make sure nobody else can read your crontab. If not, they can
+#        get access to your password, and I'm not good at sympathy.
+#
 #        $ git clone git://github.com/l0b0/export.git
 #
 #        $ crontab -e
@@ -21,9 +24,6 @@
 #
 #        @midnight /.../export/LibraryThing.sh user password /.../lt.csv
 #
-#        Don't blame me if you didn't protect the password well enough. If
-#        you've got a suggestion for improving the security, please let me 
-#        know.
 #
 # BUGS
 #        https://github.com/l0b0/export/issues
