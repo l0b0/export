@@ -1,13 +1,13 @@
 #!/bin/sh
 #
 # NAME
-#        GoogleReader.sh - Download your web feed subscriptions
+#        GoogleCalendar.sh - Download your calendars
 #
 # SYNOPSIS
-#        GoogleReader.sh <username> <password> <save path>
+#        GoogleCalendar.sh <username> <password> <save directory>
 #
 # DESCRIPTION
-#        Downloads the web feed subscriptions at Google Reader as an OPML file.
+#        Downloads your Google Calendar iCal files.
 #
 #        How to export at midnight every day:
 #
@@ -21,13 +21,13 @@
 #        Insert a new line with the following contents (replacing the example
 #        paths and login with your own):
 #
-#        @midnight /.../export/GoogleReader.sh user password /.../feeds.xml
+#        @midnight /.../export/GoogleCalendar.sh user password /.../calendars
 #
 # BUGS
 #        https://github.com/l0b0/export/issues
 #
 # COPYRIGHT AND LICENSE
-#        Copyright (C) 2010, 2011 Victor Engmark
+#        Copyright (C) 2011 Victor Engmark
 #
 #        This program is free software: you can redistribute it and/or modify
 #        it under the terms of the GNU General Public License as published by
@@ -65,11 +65,13 @@ then
     echo "You need to download https://github.com/l0b0/export/blob/master/GoogleAuth.sh and put it in the same directory as this script." >&2
     exit 1
 fi
-. "${directory}/GoogleAuth.sh"
+. "$AUTH_SCRIPT"
 
 # Export
-EXPORT_URL=https://www.google.com/reader/subscriptions/export
-wget --no-check-certificate --load-cookies="$COOKIES_PATH" --output-document="$EXPORT_PATH" "$EXPORT_URL"
+EXPORT_URL=https://www.google.com/calendar/exporticalzip
+EXPORT_FILE="${EXPORT_PATH}/calendars.zip"
+wget --no-check-certificate --load-cookies="$COOKIES_PATH" --output-document="$EXPORT_FILE" "$EXPORT_URL"
+unzip -o -d "$EXPORT_PATH" "$EXPORT_FILE"
 
 # Cleanup
-rm -f -- "$COOKIES_PATH"
+rm -f -- "$COOKIES_PATH" "$EXPORT_FILE"
