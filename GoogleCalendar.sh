@@ -7,7 +7,8 @@
 #        GoogleCalendar.sh <username> <password> <save directory>
 #
 # DESCRIPTION
-#        Downloads your Google Calendar iCal files.
+#        Downloads your Google Calendar iCal files as single files and removes
+#        the DTSTAMP entries (they just contain the export time).
 #
 #        How to export at midnight every day:
 #
@@ -74,4 +75,5 @@ wget --no-check-certificate --load-cookies="$COOKIES_PATH" --output-document="$E
 unzip -o -d "$EXPORT_PATH" "$EXPORT_FILE"
 
 # Cleanup
+sed -i -e '/^DTSTAMP:/d' "$EXPORT_PATH"/*
 rm -f -- "$COOKIES_PATH" "$EXPORT_FILE"
