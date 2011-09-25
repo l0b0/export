@@ -55,6 +55,7 @@ fi
 USERNAME="${1%%@*}" # Apply the @gmail.com part later
 PASSWORD="$2"
 EXPORT_PATH="$3"
+SERVICE=cl
 
 # Authenticate
 directory="$(dirname -- "$(readlink -fn -- "$0")")"
