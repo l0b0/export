@@ -60,19 +60,16 @@ SERVICE=cl
 # Authenticate
 directory="$(dirname -- "$(readlink -fn -- "$0")")"
 COOKIES_PATH="${EXPORT_PATH}.cookie"
-AUTH_SCRIPT="${directory}/GoogleAuth.sh"
-if ! [ -e "$AUTH_SCRIPT" ]
-then
-    echo "$AUTH_SCRIPT is missing." >&2
-    echo "You need to download https://github.com/l0b0/export/blob/master/GoogleAuth.sh and put it in the same directory as this script." >&2
-    exit 1
-fi
-. "$AUTH_SCRIPT"
+
+. "${directory}/GoogleAuth.sh"
 
 # Export
-EXPORT_URL=https://www.google.com/calendar/exporticalzip
 EXPORT_FILE="${EXPORT_PATH}/calendars.zip"
-wget --no-check-certificate --load-cookies="$COOKIES_PATH" --output-document="$EXPORT_FILE" "$EXPORT_URL"
+wget \
+    --no-check-certificate \
+    --load-cookies="$COOKIES_PATH" \
+    --output-document="$EXPORT_FILE" \
+    https://www.google.com/calendar/exporticalzip
 unzip -o -d "$EXPORT_PATH" "$EXPORT_FILE"
 
 # Cleanup

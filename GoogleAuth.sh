@@ -32,10 +32,18 @@
 ################################################################################
 
 # Authenticate
-LOGIN_URL='https://accounts.google.com/ServiceLogin?service='$SERVICE
-wget --save-cookies="$COOKIES_PATH" --keep-session-cookies --no-check-certificate --output-document=/dev/null "$LOGIN_URL"
+wget \
+    --save-cookies="$COOKIES_PATH" \
+    --keep-session-cookies \
+    --no-check-certificate \
+    --output-document=/dev/null \
+    'https://accounts.google.com/ServiceLogin?service='$SERVICE
 
-GALX="$(grep GALX "$COOKIES_PATH" | cut -f 7)"
-
-POST_DATA="Email=${USERNAME}@gmail.com&Passwd=${PASSWORD}&GALX=${GALX}"
-wget --post-data="$POST_DATA" --load-cookies="$COOKIES_PATH" --save-cookies="$COOKIES_PATH" --no-check-certificate --keep-session-cookies --output-document=/dev/null https://accounts.google.com/ServiceLoginAuth?service=$SERVICE
+wget \
+    --post-data="Email=${USERNAME}@gmail.com&Passwd=${PASSWORD}&GALX=$(grep GALX "$COOKIES_PATH" | cut -f 7)" \
+    --load-cookies="$COOKIES_PATH" \
+    --save-cookies="$COOKIES_PATH" \
+    --no-check-certificate \
+    --keep-session-cookies \
+    --output-document=/dev/null \
+    https://accounts.google.com/ServiceLoginAuth?service=$SERVICE
