@@ -56,5 +56,12 @@ PASSWORD="$2"
 EXPORT_PATH="$3"
 
 # Export
-EXPORT_URL=https://api.del.icio.us/v1/posts/all
+EXPORT_URL=https://api.del.icio.us/v1/posts/all?meta=yes
+EXPORT_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+EXPORT_COMPATIBILITY='
+s#>#>\n#g;
+s#<post #  <post #g;
+s#<posts \(tag="[^"]*"\) \(user="[^"]*"\)>#<posts \2 update="'$EXPORT_DATE'" \1 total="-1">#;
+s#<post \(description="[^"]*"\) \(extended="[^"]*"\) \(hash="[^"]*"\) \(href="[^"]*"\) \(meta="[^"]*"\) \(private="[^"]*"\) \(shared="[^"]*"\) \(tag="[^"]*"\) \(time="[^"]*"\)/>#<post \4 \3 \1 \8 \9 \2 \5 />#g;'
 wget --user="$USERNAME" --password="$PASSWORD" -O "$EXPORT_PATH" --no-check-certificate "$EXPORT_URL"
+sed -i -e "$EXPORT_COMPATIBILITY" "$EXPORT_PATH"
