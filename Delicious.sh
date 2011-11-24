@@ -82,7 +82,7 @@ do
         --no-check-certificate \
         "$EXPORT_URL?start=$(bookmarks_count)" >> "$EXPORT_PATH"
 done
-sed -i.bak -e 's#><#>\n<#g' "$EXPORT_PATH" # Introduce newlines
-sed -i.bak2 -e "$EXPORT_COMPATIBILITY" "$EXPORT_PATH"
-sed -i.bak3 -e "$EXPORT_REMOVE_LINES" "$EXPORT_PATH"
+sed -i -e 's#><#>\n<#g' "$EXPORT_PATH" # Introduce newlines
+sed -i -e "$EXPORT_COMPATIBILITY" "$EXPORT_PATH"
+sed -i -e "$EXPORT_REMOVE_LINES" "$EXPORT_PATH"
 echo '<\/posts>' >> "$EXPORT_PATH"
