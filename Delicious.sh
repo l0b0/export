@@ -64,7 +64,7 @@ chunk_lines=$(($chunk_size + $header_lines))
 EXPORT_COMPATIBILITY='
 s#^<posts \(tag="[^"]*"\) \(total="[^"]*"\) \(user="[^"]*"\)>#<posts \3 update="'$EXPORT_DATE'" \1 \2>#;
 s#^<post \(description="[^"]*"\) \(extended="[^"]*"\) \(hash="[^"]*"\) \(href="[^"]*"\) private="[^"]*" shared="[^"]*" \(tag="[^"]*"\) \(time="[^"]*"\)/>#  <post \4 \3 \1 \5 \6 \2 meta="" />#'
-EXPORT_REMOVE_LINES='3,${/^</d};'
+EXPORT_REMOVE_LINES='3,${/^</d}'
 bookmark_prefix='<post '
 
 > "$EXPORT_PATH" # Empty bookmarks file
