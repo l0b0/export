@@ -56,12 +56,33 @@ PASSWORD="$2"
 EXPORT_PATH="$3"
 
 # Export
-EXPORT_URL=https://api.del.icio.us/v1/posts/all?meta=yes
+EXPORT_URL=https://api.del.icio.us/v1/posts/all
 EXPORT_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+chunk_size=1000 # Delicious now only supports exporting 1000 bookmarks at a time
+header_lines=3
+chunk_lines=$(($chunk_size + $header_lines))
 EXPORT_COMPATIBILITY='
-s#>#>\n#g;
-s#<post #  <post #g;
-s#<posts \(tag="[^"]*"\) \(user="[^"]*"\)>#<posts \2 update="'$EXPORT_DATE'" \1 total="-1">#;
-s#<post \(description="[^"]*"\) \(extended="[^"]*"\) \(hash="[^"]*"\) \(href="[^"]*"\) \(meta="[^"]*"\) \(private="[^"]*"\) \(shared="[^"]*"\) \(tag="[^"]*"\) \(time="[^"]*"\)/>#<post \4 \3 \1 \8 \9 \2 \5 />#g;'
-wget --user="$USERNAME" --password="$PASSWORD" -O "$EXPORT_PATH" --no-check-certificate "$EXPORT_URL"
-sed -i -e "$EXPORT_COMPATIBILITY" "$EXPORT_PATH"
+s#^<posts \(tag="[^"]*"\) \(total="[^"]*"\) \(user="[^"]*"\)>#<posts \3 update="'$EXPORT_DATE'" \1 \2>#;
+s#^<post \(description="[^"]*"\) \(extended="[^"]*"\) \(hash="[^"]*"\) \(href="[^"]*"\) private="[^"]*" shared="[^"]*" \(tag="[^"]*"\) \(time="[^"]*"\)/>#  <post \4 \3 \1 \5 \6 \2 meta="" />#'
+EXPORT_REMOVE_LINES='3,${/^</d};'
+bookmark_prefix='<post '
+
+> "$EXPORT_PATH" # Empty bookmarks file
+
+bookmarks_count() {
+    # How many bookmarks have we fetched?
+    grep -o "${bookmark_prefix}" "$EXPORT_PATH" | wc -l || true
+}
+
+while [ $(($(bookmarks_count) % $chunk_size)) -eq 0 ]
+do
+    wget \
+        --user="$USERNAME" --password="$PASSWORD" \
+        -O- \
+        --no-check-certificate \
+        "$EXPORT_URL?start=$(bookmarks_count)" >> "$EXPORT_PATH"
+done
+sed -i.bak -e 's#><#>\n<#g' "$EXPORT_PATH" # Introduce newlines
+sed -i.bak2 -e "$EXPORT_COMPATIBILITY" "$EXPORT_PATH"
+sed -i.bak3 -e "$EXPORT_REMOVE_LINES" "$EXPORT_PATH"
+echo '<\/posts>' >> "$EXPORT_PATH"
