@@ -18,17 +18,19 @@
 #
 #        $ crontab -e
 #
-#        Insert a new line with the following contents (replacing the example
-#        paths, login and host (only the part before .wordpress.com with your
-#        own):
-#
-#        @midnight /.../export/WordPress.com.sh user password host /.../wp.xml
+#        Insert a new line with the following contents (replacing the paths and
+#        credentials with your own):
+
+#        Insert a new line with the following contents (replacing the paths,
+#        credentials and host (only the part before .wordpress.com with your
+#        own): #
+#        @midnight "/.../export/WordPress.com.sh" "user" "password" "host" "/.../wp.xml"
 #
 # BUGS
 #        https://github.com/l0b0/export/issues
 #
 # COPYRIGHT AND LICENSE
-#        Copyright (C) 2010, 2011 Victor Engmark
+#        Copyright (C) 2010-2012 Victor Engmark
 #
 #        This program is free software: you can redistribute it and/or modify
 #        it under the terms of the GNU General Public License as published by

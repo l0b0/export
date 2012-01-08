@@ -19,16 +19,16 @@
 #
 #        $ crontab -e
 #
-#        Insert a new line with the following contents (replacing the example
-#        paths and login with your own):
+#        Insert a new line with the following contents (replacing the paths and
+#        credentials with your own):
 #
-#        @midnight /.../export/LibraryThing.sh user password /.../lt.csv
+#        @midnight "/.../export/LibraryThing.sh" "user" "password" "/.../lt.csv"
 #
 # BUGS
 #        https://github.com/l0b0/export/issues
 #
 # COPYRIGHT AND LICENSE
-#        Copyright (C) 2010, 2011 Victor Engmark
+#        Copyright (C) 2010-2012 Victor Engmark
 #
 #        This program is free software: you can redistribute it and/or modify
 #        it under the terms of the GNU General Public License as published by
