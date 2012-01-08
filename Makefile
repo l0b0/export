@@ -50,29 +50,46 @@ $(WORDPRESS_COM_TARGET_PATH): $(WORDPRESS_COM_SOURCE_PATH)
 	cp $(WORDPRESS_COM_SOURCE_PATH) $(WORDPRESS_COM_TARGET_PATH)
 
 # Static targets
-.PHONY: install-delicious
+.PHONY: install-delicious uninstall-delicious
 install-delicious: $(DELICIOUS_TARGET_PATH)
+uninstall-delicious:
+	rm -f $(DELICIOUS_TARGET_PATH)
 
-.PHONY: install-google-calendar
+.PHONY: install-google-calendar uninstall-google-calendar
 install-google-calendar: $(GOOGLE_CALENDAR_TARGET_PATH)
 	sed -i -e \
 		"s/$(GOOGLE_AUTH_SOURCE_FILE)/$(GOOGLE_AUTH_TARGET_FILE)/g" \
 		$(GOOGLE_CALENDAR_TARGET_PATH)
 
-.PHONY: install-google-reader
+uninstall-google-calendar:
+	rm -f $(GOOGLE_CALENDAR_TARGET_PATH)
+
+.PHONY: install-google-reader uninstall-google-reader
 install-google-reader: $(GOOGLE_READER_TARGET_PATH)
 	sed -i -e \
 		"s/$(GOOGLE_AUTH_SOURCE_FILE)/$(GOOGLE_AUTH_TARGET_FILE)/g" \
 		$(GOOGLE_READER_TARGET_PATH)
 
-.PHONY: install-last-fm
+uninstall-google-reader:
+	rm -f $(GOOGLE_READER_TARGET_PATH)
+
+.PHONY: install-last-fm uninstall-last-fm
 install-last-fm: $(LAST_FM_TARGET_PATH)
 
-.PHONY: install-librarything
+uninstall-last-fm:
+	rm -f $(LAST_FM_TARGET_PATH)
+
+.PHONY: install-librarything uninstall-librarything
 install-librarything: $(LIBRARYTHING_TARGET_PATH)
 
-.PHONY: install-wordpress-com
+uninstall-librarything:
+	rm -f $(LIBRARYTHING_TARGET_PATH)
+
+.PHONY: install-wordpress-com uninstall-wordpress-com
 install-wordpress-com: $(WORDPRESS_COM_TARGET_PATH)
+
+uninstall-wordpress-com:
+	rm -f $(WORDPRESS_COM_TARGET_PATH)
 
 .PHONY: install
 install: \
@@ -84,14 +101,12 @@ install: \
 	install-wordpress-com
 
 .PHONY: uninstall
-uninstall:
-	rm -f \
-		$(DELICIOUS_TARGET_PATH) \
-		$(GOOGLE_AUTH_TARGET_PATH) \
-		$(GOOGLE_CALENDAR_TARGET_PATH) \
-		$(GOOGLE_READER_TARGET_PATH) \
-		$(LAST_FM_TARGET_PATH) \
-		$(LIBRARYTHING_TARGET_PATH) \
-		$(WORDPRESS_COM_TARGET_PATH)
+uninstall: \
+	uninstall-delicious \
+	uninstall-google-calendar \
+	uninstall-google-reader \
+	uninstall-last-fm \
+	uninstall-librarything \
+	uninstall-wordpress-com
 
 include tools.mk
