@@ -85,4 +85,4 @@ done
 sed -i -e 's#><#>\n<#g' "$EXPORT_PATH" # Introduce newlines
 sed -i -e "$EXPORT_COMPATIBILITY" "$EXPORT_PATH"
 sed -i -e "$EXPORT_REMOVE_LINES" "$EXPORT_PATH"
-echo '<\/posts>' >> "$EXPORT_PATH"
+echo '</posts>' >> "$EXPORT_PATH"
