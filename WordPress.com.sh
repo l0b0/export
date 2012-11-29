@@ -63,14 +63,14 @@ EXPORT_PATH="$4"
 COOKIES_PATH="${EXPORT_PATH}.cookie"
 LOGIN_URL="https://${HOSTNAME}.wordpress.com/wp-login.php"
 
-curl --cookie-jar "$COOKIES_PATH" --output /dev/null --data "log=${USERNAME}&pwd=${PASSWORD}&rememberme=forever&wp-submit=Log In&redirect_to=https://${HOSTNAME}.wordpress.com/wp-admin/&testcookie=1" "$LOGIN_URL"
+curl --insecure --cookie-jar "$COOKIES_PATH" --output /dev/null --data "log=${USERNAME}&pwd=${PASSWORD}&rememberme=forever&wp-submit=Log In&redirect_to=https://${HOSTNAME}.wordpress.com/wp-admin/&testcookie=1" "$LOGIN_URL"
 
 # Cookie cleansing
 sed -i -e 's/#HttpOnly_//' "$COOKIES_PATH"
 
 # Export database
 EXPORT_URL="https://${HOSTNAME}.wordpress.com/wp-admin/export.php?download=true&submit=Download Export File"
-wget --load-cookies "$COOKIES_PATH" --output-document "$EXPORT_PATH" "$EXPORT_URL"
+wget --no-check-certificate --load-cookies "$COOKIES_PATH" --output-document "$EXPORT_PATH" "$EXPORT_URL"
 
 # Cleanup
 rm -f -- "$COOKIES_PATH"
