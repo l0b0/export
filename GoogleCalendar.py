@@ -1,14 +1,14 @@
 #!/usr/bin/python
 try:
-  from xml.etree import ElementTree
+    from xml.etree import ElementTree
 except ImportError:
-  from elementtree import ElementTree
+    from elementtree import ElementTree
 import gdata.calendar.service
 import gdata.service
 import atom.service
 import gdata.calendar
 #--------------------
-import datetime 
+import datetime
 import urllib2
 
 email = ''
@@ -37,13 +37,13 @@ for i, a_calendar in enumerate(feed.entry):
 
 for name, url in cals.iteritems():
     # Create the ical url, we need to add the authorization header because
-    # we are using the private url.  This allows us to grab all of the 
+    # we are using the private url.  This allows us to grab all of the
     # calendars regardless if they are private or public.
     ical = 'https://www.google.com/calendar/ical/' + url + '/private/basic.ics'
     req = urllib2.Request(ical)
-    req.add_header('Authorization', 'GoogleLogin auth='+token)
+    req.add_header('Authorization', 'GoogleLogin auth=' + token)
     r = urllib2.urlopen(req)
     # create/open the ics file and write the retrieved ical to it.
-    local = open(backup_folder+name+'.ics',"w")
+    local = open(backup_folder + name + '.ics', "w")
     local.write(r.read())
     local.close()
