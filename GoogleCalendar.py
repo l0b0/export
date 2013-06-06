@@ -17,7 +17,8 @@ application-specific password. You can create one at
 <https://accounts.google.com/IssuedAuthSubTokens>.
 
 Example:
-    GoogleCalendar.py john.doe abcd1234efgh5678 ~/calendars
+
+GoogleCalendar.py john.doe abcd1234efgh5678 ~/calendars
 """
 try:
     from xml.etree import ElementTree
