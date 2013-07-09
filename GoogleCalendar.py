@@ -90,7 +90,9 @@ def backup(login_token, target_dir):
         r = urllib2.urlopen(req)
         # create/open the ics file and write the retrieved ical to it.
         local = open(os.path.join(target_dir, name + '.ics'), "w")
-        local.write(r.read())
+        for line in urllib2.urlopen(req):
+            if not line.startswith('DTSTAMP:'):
+                local.write(line)
         local.close()
 
 
