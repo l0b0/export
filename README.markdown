@@ -1,7 +1,7 @@
 Export scripts
 ==============
 
-These scripts are all open source and used by yours truly, which means they should be up to date pretty much all the time. Supported web sites:
+These scripts are all [open source](LICENSE.txt) and used by yours truly, which means they should be up to date pretty much all the time. Supported web sites:
 
 * [Google Calendar](https://www.google.com/calendar/render)
 * [LibraryThing](https://www.librarything.com/)
