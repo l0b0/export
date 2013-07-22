@@ -10,6 +10,7 @@ These scripts are all open source and used by yours truly, which means they shou
 Install
 -------
 
+    git submodule update --init
     sudo make install
 
 Use

@@ -141,4 +141,4 @@ install-crontab: \
 	install-crontab-librarything \
 	install-crontab-wordpress-com
 
-include tools.mk
+include make-includes/variables.mk
