@@ -82,7 +82,7 @@ sed -i -e 's/#HttpOnly_//' "$cookies_path"
 
 # Export database
 export_url="https://${hostname}.wordpress.com/wp-admin/export.php?download=true&submit=Download%20Export%20File"
-wget --no-check-certificate --load-cookies "$cookies_path" --output-document "$export_path" "$export_url"
+wget --no-check-certificate --load-cookies "$cookies_path" --output-document "$export_path" --max-redirect=0 "$export_url"
 
 # Export files
 files_parent="$(dirname -- "$export_path")"
