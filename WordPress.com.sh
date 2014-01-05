@@ -68,7 +68,9 @@ then
     trap 'rm -f -- "$cookies_path"' EXIT
 fi
 
-curl --insecure --cookie-jar "$cookies_path" --output /dev/null --data "log=${username}&pwd=${password}&rememberme=forever&wp-submit=Log In&redirect_to=https://${hostname}.wordpress.com/wp-admin/&testcookie=1" "$login_url"
+login_data="log=${username}&pwd=${password}&rememberme=forever&wp-submit=Log In&redirect_to=https://${hostname}.wordpress.com/wp-admin/&testcookie=1"
+
+curl --insecure --cookie-jar "$cookies_path" --output /dev/null --data "$login_data" "$login_url"
 
 # Cookie cleansing
 sed -i -e 's/#HttpOnly_//' "$cookies_path"
