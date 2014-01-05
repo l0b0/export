@@ -119,6 +119,7 @@ install: \
 	install-google-calendar \
 	install-librarything \
 	install-wordpress-com
+	pip2 install --requirement requirements.txt
 
 .PHONY: uninstall
 uninstall: \
