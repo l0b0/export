@@ -63,6 +63,11 @@ export_path="$4"
 cookies_path="${export_path}.cookie"
 login_url="https://${hostname}.wordpress.com/wp-login.php"
 
+if [ -z "${DEBUG+defined}" ]
+then
+    trap 'rm -f -- "$cookies_path"' EXIT
+fi
+
 curl --insecure --cookie-jar "$cookies_path" --output /dev/null --data "log=${username}&pwd=${password}&rememberme=forever&wp-submit=Log In&redirect_to=https://${hostname}.wordpress.com/wp-admin/&testcookie=1" "$login_url"
 
 # Cookie cleansing
@@ -71,9 +76,6 @@ sed -i -e 's/#HttpOnly_//' "$cookies_path"
 # Export database
 export_url="https://${hostname}.wordpress.com/wp-admin/export.php?download=true&submit=Download Export File"
 wget --no-check-certificate --load-cookies "$cookies_path" --output-document "$export_path" "$export_url"
-
-# Cleanup
-rm -f -- "$cookies_path"
 
 # Export files
 files_parent="$(dirname -- "$export_path")"
