@@ -68,7 +68,8 @@ then
     trap 'rm -f -- "$cookies_path"' EXIT
 fi
 
-curl --insecure --cookie-jar "$cookies_path" --output /dev/null \
+curl --insecure --cookie-jar "$cookies_path" --output /dev/null "$login_url"
+curl --insecure --cookie "$cookies_path" --cookie-jar "$cookies_path" --output /dev/null \
     --data-urlencode "log=${username}" \
     --data-urlencode "pwd=${password}" \
     --data-urlencode "rememberme=forever" \
