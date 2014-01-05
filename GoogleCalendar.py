@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
 Google Calendar backup script
@@ -21,7 +21,7 @@ Example:
 GoogleCalendar.py john.doe abcd1234efgh5678 ~/calendars
 
 Copyright (C) 2011 Lucas David-Roesler
-Copyright (C) 2013 Victor Engmark
+Copyright (C) 2013-2014 Victor Engmark
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
