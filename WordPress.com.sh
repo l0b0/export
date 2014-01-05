@@ -30,7 +30,7 @@
 #        https://github.com/l0b0/export/issues
 #
 # COPYRIGHT AND LICENSE
-#        Copyright (C) 2010-2012 Victor Engmark
+#        Copyright (C) 2010-2014 Victor Engmark
 #
 #        This program is free software: you can redistribute it and/or modify
 #        it under the terms of the GNU General Public License as published by
@@ -54,29 +54,29 @@ then
     exit 1
 fi
 
-USERNAME="$1"
-PASSWORD="$2"
-HOSTNAME="${3%%.*}" # Don't need the full host name
-EXPORT_PATH="$4"
+username="$1"
+password="$2"
+hostname="${3%%.*}" # Don't need the full host name
+export_path="$4"
 
 # Authenticate
-COOKIES_PATH="${EXPORT_PATH}.cookie"
-LOGIN_URL="https://${HOSTNAME}.wordpress.com/wp-login.php"
+cookies_path="${export_path}.cookie"
+login_url="https://${hostname}.wordpress.com/wp-login.php"
 
-curl --insecure --cookie-jar "$COOKIES_PATH" --output /dev/null --data "log=${USERNAME}&pwd=${PASSWORD}&rememberme=forever&wp-submit=Log In&redirect_to=https://${HOSTNAME}.wordpress.com/wp-admin/&testcookie=1" "$LOGIN_URL"
+curl --insecure --cookie-jar "$cookies_path" --output /dev/null --data "log=${username}&pwd=${password}&rememberme=forever&wp-submit=Log In&redirect_to=https://${hostname}.wordpress.com/wp-admin/&testcookie=1" "$login_url"
 
 # Cookie cleansing
-sed -i -e 's/#HttpOnly_//' "$COOKIES_PATH"
+sed -i -e 's/#HttpOnly_//' "$cookies_path"
 
 # Export database
-EXPORT_URL="https://${HOSTNAME}.wordpress.com/wp-admin/export.php?download=true&submit=Download Export File"
-wget --no-check-certificate --load-cookies "$COOKIES_PATH" --output-document "$EXPORT_PATH" "$EXPORT_URL"
+export_url="https://${hostname}.wordpress.com/wp-admin/export.php?download=true&submit=Download Export File"
+wget --no-check-certificate --load-cookies "$cookies_path" --output-document "$export_path" "$export_url"
 
 # Cleanup
-rm -f -- "$COOKIES_PATH"
+rm -f -- "$cookies_path"
 
 # Export files
-FILES_PARENT="$(dirname -- "$EXPORT_PATH")"
-FILES_ROOT="$(basename -- "$EXPORT_PATH")"
-FILES_DIR="${FILES_PARENT}/${FILES_ROOT%.*}_files"
-perl -nle 'print for m/(?:<wp:attachment_url>)(.*)(?:<\/wp:attachment_url>)/g' "$EXPORT_PATH" | wget --input-file - --force-directories --no-host-directories --timestamping --directory-prefix "$FILES_DIR"
+files_parent="$(dirname -- "$export_path")"
+files_root="$(basename -- "$export_path")"
+files_dir="${files_parent}/${files_root%.*}_files"
+perl -nle 'print for m/(?:<wp:attachment_url>)(.*)(?:<\/wp:attachment_url>)/g' "$export_path" | wget --input-file - --force-directories --no-host-directories --timestamping --directory-prefix "$files_dir"
