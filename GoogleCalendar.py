@@ -40,11 +40,7 @@ try:
     from xml.etree import ElementTree
 except ImportError:
     from elementtree import ElementTree
-import atom.service
-import datetime
-import gdata.calendar
 import gdata.calendar.service
-import gdata.service
 import os
 import sys
 import urllib2
