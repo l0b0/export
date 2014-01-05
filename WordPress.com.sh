@@ -68,8 +68,8 @@ then
     trap 'rm -f -- "$cookies_path"' EXIT
 fi
 
-curl --insecure --cookie-jar "$cookies_path" --output /dev/null "$login_url"
-curl --insecure --cookie "$cookies_path" --cookie-jar "$cookies_path" --output /dev/null \
+curl --cookie-jar "$cookies_path" --output /dev/null "$login_url"
+curl --cookie "$cookies_path" --cookie-jar "$cookies_path" --output /dev/null \
     --data-urlencode "log=${username}" \
     --data-urlencode "pwd=${password}" \
     --data-urlencode "rememberme=forever" \
@@ -83,7 +83,7 @@ sed -i -e 's/#HttpOnly_//' "$cookies_path"
 
 # Export database
 export_url="https://${hostname}.wordpress.com/wp-admin/export.php?download=true&submit=Download%20Export%20File"
-wget --no-check-certificate --load-cookies "$cookies_path" --output-document "$export_path" --max-redirect=0 "$export_url"
+wget --load-cookies "$cookies_path" --output-document "$export_path" --max-redirect=0 "$export_url"
 
 # Export files
 files_parent="$(dirname -- "$export_path")"
