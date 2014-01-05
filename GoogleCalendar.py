@@ -51,8 +51,8 @@ import urllib2
 
 CALENDAR_SERVICE = gdata.calendar.service.CalendarService()
 CALENDAR_SERVICE.source = 'Google-Calendar_Backup'
-GCAL_URL_PREFIX = 'https://www.google.com/calendar/ical'
-GCAL_URL_SUFFIX = 'private/basic.ics'
+GOOGLE_CALENDAR_URL_PREFIX = 'https://www.google.com/calendar/ical'
+GOOGLE_CALENDAR_URL_SUFFIX = 'private/basic.ics'
 
 
 def auth(username, password):
@@ -75,22 +75,22 @@ def backup(login_token, target_dir):
     # calendar list
     feed = CALENDAR_SERVICE.GetOwnCalendarsFeed()
     # calendar bucket
-    cals = {}
+    calendars = {}
     for i, a_calendar in enumerate(feed.entry):
         # Grab the calendar id and append it to the bucket.
-        cals[a_calendar.title.text] = a_calendar.id.text.split('/')[-1]
+        calendars[a_calendar.title.text] = a_calendar.id.text.split('/')[-1]
 
-    for name, url in cals.iteritems():
+    for name, url in calendars.iteritems():
         # Create the ical url, we need to add the authorization header because
         # we are using the private url.  This allows us to grab all of the
         # calendars regardless if they are private or public.
-        ical = os.path.join(GCAL_URL_PREFIX, url, GCAL_URL_SUFFIX)
-        req = urllib2.Request(ical)
-        req.add_header('Authorization', 'GoogleLogin auth=' + login_token)
-        r = urllib2.urlopen(req)
+        ical_url = os.path.join(GOOGLE_CALENDAR_URL_PREFIX, url, GOOGLE_CALENDAR_URL_SUFFIX)
+        request = urllib2.Request(ical_url)
+        request.add_header('Authorization', 'GoogleLogin auth=' + login_token)
+        r = urllib2.urlopen(request)
         # create/open the ics file and write the retrieved ical to it.
         local = open(os.path.join(target_dir, name + '.ics'), "w")
-        for line in urllib2.urlopen(req):
+        for line in urllib2.urlopen(request):
             if not line.startswith('DTSTAMP:'):
                 local.write(line)
         local.close()
