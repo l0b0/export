@@ -71,7 +71,9 @@ then
 fi
 cookies_path="${tmp_dir}/cookie"
 signup_path="${tmp_dir}/signup"
-login_url='https://www.librarything.com/signup.php'
+hostname='www.librarything.com'
+base_url="https://${hostname}"
+login_url="${base_url}/signup.php"
 
 wget --post-data "$post_data" --keep-session-cookies --save-cookies="$cookies_path" --output-document="$signup_path" "$login_url"
 
@@ -80,6 +82,6 @@ checksum="$(grep 'cookie_userchecksum' "$cookies_path" | cut -f 7)"
 usernum="$(grep 'cookie_usernum' "$cookies_path" | cut -f 7)"
 userid="$(grep 'cookie_userid' "$cookies_path" | cut -f 7)"
 cookie="cookie_userchecksum=${checksum};cookie_usernum=${usernum};cookie_userid=${userid}"
-export_url=https://www.librarything.com/export-csv
+export_url="${base_url}/export-csv"
 
 wget --header "Cookie: $cookie" -O "$export_path" "$export_url"
