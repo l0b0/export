@@ -47,6 +47,10 @@
 #
 ################################################################################
 set -o errexit -o nounset
+if [ -n "${DEBUG+defined}" ]
+then
+    set -o xtrace
+fi
 
 if [ $# -ne 3 ]
 then
