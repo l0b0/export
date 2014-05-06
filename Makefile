@@ -1,7 +1,7 @@
 PREFIX = /usr/local/bin
 
 .PHONY: all
-all: install
+all: test
 
 GOOGLE_CALENDAR_SOURCE_FILE = GoogleCalendar.py
 GOOGLE_CALENDAR_SOURCE_PATH = $(CURDIR)/$(GOOGLE_CALENDAR_SOURCE_FILE)
@@ -23,6 +23,8 @@ WORDPRESS_COM_TARGET_FILE = export_$(basename $(WORDPRESS_COM_SOURCE_FILE))
 WORDPRESS_COM_TARGET_PATH = $(PREFIX)/$(WORDPRESS_COM_TARGET_FILE)
 $(WORDPRESS_COM_TARGET_PATH): $(WORDPRESS_COM_SOURCE_PATH)
 	cp $(WORDPRESS_COM_SOURCE_PATH) $(WORDPRESS_COM_TARGET_PATH)
+
+test: python-pep8 posix-shell-test-syntax
 
 # Static targets
 .PHONY: crontab-warning
@@ -132,4 +134,6 @@ install-crontab: \
 	install-crontab-librarything \
 	install-crontab-wordpress-com
 
+include make-includes/posix-shell.mk
+include make-includes/python.mk
 include make-includes/variables.mk
