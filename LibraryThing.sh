@@ -28,7 +28,7 @@
 #        https://github.com/l0b0/export/issues
 #
 # COPYRIGHT AND LICENSE
-#        Copyright (C) 2010-2012 Victor Engmark
+#        Copyright (C) 2010-2014 Victor Engmark
 #
 #        This program is free software: you can redistribute it and/or modify
 #        it under the terms of the GNU General Public License as published by
@@ -60,6 +60,7 @@ EXPORT_PATH="$3"
 POST_DATA="formusername=${USERNAME}&formpassword=${PASSWORD}&index_signin_already=Sign%20in"
 COOKIES_PATH="${EXPORT_PATH}.cookie"
 SIGNUP_PATH="${EXPORT_PATH}.signup"
+trap 'rm -f -- "$COOKIES_PATH" "$SIGNUP_PATH"' EXIT
 LOGIN_URL='https://www.librarything.com/signup.php'
 
 wget --post-data "$POST_DATA" --keep-session-cookies --save-cookies="$COOKIES_PATH" --no-check-certificate --output-document="$SIGNUP_PATH" "$LOGIN_URL"
@@ -72,6 +73,3 @@ COOKIE="cookie_userchecksum=${CHECKSUM};cookie_usernum=${USERNUM};cookie_userid=
 EXPORT_URL=https://www.librarything.com/export-csv
 
 wget --no-check-certificate --header "Cookie: $COOKIE" -O "$EXPORT_PATH" "$EXPORT_URL"
-
-# Cleanup
-rm -f -- "$COOKIES_PATH" "$SIGNUP_PATH"
