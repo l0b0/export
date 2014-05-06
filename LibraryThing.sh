@@ -79,4 +79,4 @@ wget --post-data "$post_data" --keep-session-cookies --save-cookies="$cookies_pa
 
 # Export
 export_url="${base_url}/export-csv"
-wget --load-cookies="$cookies_path" -O "$export_path" "$export_url"
+wget --load-cookies="$cookies_path" --output-document="$export_path" "$export_url"
