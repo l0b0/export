@@ -59,13 +59,12 @@ export_path="$3"
 # Authenticate
 post_data="formusername=${username}&formpassword=${password}&index_signin_already=Sign%20in"
 tmp_dir="$(mktemp -d)"
-trap 'rm -rf -- "$tmp_dir"' EXIT
+if [ -z "${DEBUG+defined}" ]
+then
+    trap 'rm -rf -- "$tmp_dir"' EXIT
+fi
 cookies_path="${tmp_dir}/cookie"
 signup_path="${tmp_dir}/signup"
-if [ -n "${DEBUG+defined}" ]
-then
-    trap '' EXIT
-fi
 login_url='https://www.librarything.com/signup.php'
 
 wget --post-data "$post_data" --keep-session-cookies --save-cookies="$cookies_path" --no-check-certificate --output-document="$signup_path" "$login_url"
