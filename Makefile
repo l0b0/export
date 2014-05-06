@@ -24,7 +24,10 @@ WORDPRESS_COM_TARGET_PATH = $(PREFIX)/$(WORDPRESS_COM_TARGET_FILE)
 $(WORDPRESS_COM_TARGET_PATH): $(WORDPRESS_COM_SOURCE_PATH)
 	cp $(WORDPRESS_COM_SOURCE_PATH) $(WORDPRESS_COM_TARGET_PATH)
 
-test: python-pep8 posix-shell-test-syntax
+PEP8_OPTIONS = --max-line-length=120
+
+test: posix-shell-test-syntax
+	make python-pep8
 
 # Static targets
 .PHONY: crontab-warning
