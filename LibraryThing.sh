@@ -27,6 +27,8 @@
 # BUGS
 #        https://github.com/l0b0/export/issues
 #
+#        Set the DEBUG environment variable for debugging output.
+#
 # COPYRIGHT AND LICENSE
 #        Copyright (C) 2010-2014 Victor Engmark
 #
