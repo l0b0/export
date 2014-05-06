@@ -73,7 +73,7 @@ cookies_path="${tmp_dir}/cookie"
 signup_path="${tmp_dir}/signup"
 hostname='www.librarything.com'
 base_url="https://${hostname}"
-login_url="${base_url}/signup.php"
+login_url="${base_url}/enter/start"
 
 wget --post-data "$post_data" --keep-session-cookies --save-cookies="$cookies_path" --output-document="$signup_path" "$login_url"
 
