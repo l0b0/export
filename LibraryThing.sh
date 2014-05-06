@@ -58,9 +58,10 @@ export_path="$3"
 
 # Authenticate
 post_data="formusername=${username}&formpassword=${password}&index_signin_already=Sign%20in"
-cookies_path="${export_path}.cookie"
-signup_path="${export_path}.signup"
-trap 'rm -f -- "$cookies_path" "$signup_path"' EXIT
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf -- "$tmp_dir"' EXIT
+cookies_path="${tmp_dir}/cookie"
+signup_path="${tmp_dir}/signup"
 if [ -n "${DEBUG+defined}" ]
 then
     trap '' EXIT
