@@ -61,6 +61,10 @@ POST_DATA="formusername=${USERNAME}&formpassword=${PASSWORD}&index_signin_alread
 COOKIES_PATH="${EXPORT_PATH}.cookie"
 SIGNUP_PATH="${EXPORT_PATH}.signup"
 trap 'rm -f -- "$COOKIES_PATH" "$SIGNUP_PATH"' EXIT
+if [ -n "${DEBUG+defined}" ]
+then
+    trap '' EXIT
+fi
 LOGIN_URL='https://www.librarything.com/signup.php'
 
 wget --post-data "$POST_DATA" --keep-session-cookies --save-cookies="$COOKIES_PATH" --no-check-certificate --output-document="$SIGNUP_PATH" "$LOGIN_URL"
