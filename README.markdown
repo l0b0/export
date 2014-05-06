@@ -7,10 +7,11 @@ These scripts are all [open source](LICENSE.txt) and used by yours truly, which 
 * [LibraryThing](https://www.librarything.com/)
 * [WordPress.com](https://wordpress.com/)
 
-Install
--------
+Download & Install
+------------------
 
-    git submodule update --init
+    git clone --recursive https://github.com/l0b0/export.git
+    cd export
     sudo make install
 
 Use
